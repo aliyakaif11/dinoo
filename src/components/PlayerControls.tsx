@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 const formatTime = (value: number) => {
   if (!Number.isFinite(value)) return '0:00';
@@ -25,6 +25,13 @@ const PlayerControls = ({
   onSkip,
 }: PlayerControlsProps) => {
   const progress = useMemo(() => (duration ? (currentTime / duration) * 100 : 0), [currentTime, duration]);
+  const [skipDirection, setSkipDirection] = useState<'back' | 'forward' | null>(null);
+
+  const handleSkip = (delta: number) => {
+    setSkipDirection(delta > 0 ? 'forward' : 'back');
+    onSkip(delta);
+    window.setTimeout(() => setSkipDirection(null), 250);
+  };
 
   return (
     <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-950/80 px-4 py-4">
@@ -46,8 +53,10 @@ const PlayerControls = ({
       <div className="flex items-center justify-center gap-4">
         <button
           type="button"
-          onClick={() => onSkip(-10)}
-          className="rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-brand-500 hover:text-white"
+          onClick={() => handleSkip(-10)}
+          className={`rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-brand-500 hover:text-white ${
+            skipDirection === 'back' ? 'scale-105 border-brand-500 text-white' : ''
+          }`}
         >
           -10s
         </button>
@@ -60,8 +69,10 @@ const PlayerControls = ({
         </button>
         <button
           type="button"
-          onClick={() => onSkip(10)}
-          className="rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-brand-500 hover:text-white"
+          onClick={() => handleSkip(10)}
+          className={`rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-brand-500 hover:text-white ${
+            skipDirection === 'forward' ? 'scale-105 border-brand-500 text-white' : ''
+          }`}
         >
           +10s
         </button>

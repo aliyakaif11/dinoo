@@ -27,6 +27,7 @@ src/
 - **Full-page video player** with autoplay, custom controls, skip +/- 10 seconds, and seekable progress bar.
 - **In-player related list** filtered by category, switching playback instantly.
 - **Drag-to-minimize** gesture in the player that docks into a mini-player, persisting across navigation.
+- **Auto-play next** with a 2-second countdown and cancel option.
 
 ## Setup
 
@@ -37,5 +38,6 @@ npm run dev
 
 ## Notes
 
-- The dataset is stored in `src/data/videos.ts`, based on the provided sample entries.
+- The dataset is stored in `src/data/videos.ts`, based on the provided sample entries and categories.
+- Player playback uses MP4 sources (required for custom controls) while retaining the original YouTube embed URLs as source links.
 - The mini-player continues playback in a lightweight preview while browsing other pages.
